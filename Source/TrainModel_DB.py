@@ -1,3 +1,4 @@
+# Vá lỗi Numpy cho phiên bản Python mới
 import numpy as np
 np.object = object
 np.typeDict = dict
@@ -78,7 +79,9 @@ def train_and_predict_6_years():
     plt.plot(results_df['Date'], results_df['AI_Predicted_Price'], color='red', label='AI Dự Đoán', alpha=0.8)
     
     plt.title('AI DỰ ĐOÁN GIÁ BITCOIN TRONG 6 NĂM (2020 - 2026)')
-plt.xlabel('Thời Gian')
+    plt.xlabel('Thời Gian')
+    plt.title('AI DỰ ĐOÁN GIÁ BITCOIN TRONG 6 NĂM (2020 - 2026)')
+    plt.xlabel('Thời Gian')
     plt.ylabel('Giá (USDT)')
     plt.legend()
     plt.grid(True)
@@ -92,4 +95,3 @@ plt.xlabel('Thời Gian')
 
 if __name__ == "__main__":
     train_and_predict_6_years()
-
