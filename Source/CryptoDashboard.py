@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-# VÁ LỖI NUMPY CHO PYTHON MỚI
->>>>>>> 503a5e176cc49ae8487fe31f514c5be596cf7274
 import numpy as np
 np.object = object
 np.typeDict = dict
