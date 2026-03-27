@@ -1,0 +1,12 @@
+# Bỏ qua file cơ sở dữ liệu SQLite
+*.db
+*.sqlite3
+
+# Bỏ qua các file hình ảnh biểu đồ do code tự sinh ra
+*.png
+*.jpg
+
+# Bỏ qua file môi trường Python
+__pycache__/
+*.pyc
+.env
