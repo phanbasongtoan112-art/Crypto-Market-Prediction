@@ -57,6 +57,8 @@ def train_and_predict():
 # 2. Huấn luyện Model (Có chia tập Validation theo yêu cầu Slide 7)
     print("🧠 Đang huấn luyện AI LSTM (Xin chờ một lát)...")
     model = build_lstm_model((X.shape[1], X.shape[2]))
+
+    model.summary()
     
     # BỔ SUNG: validation_split=0.2 để chia 20% dữ liệu làm tập kiểm định
     # BỔ SUNG: Gán vào biến 'history' để lưu lại quá trình học
