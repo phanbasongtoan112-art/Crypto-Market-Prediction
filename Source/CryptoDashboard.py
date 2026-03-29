@@ -28,7 +28,8 @@ def load_data(table_name):
 
 # Menu thanh điều hướng
 st.sidebar.header("🎯 Menu Quản Lý")
-menu = ["1. 📦 Tiền Xử Lý & Thống Kê (EDA)", "2. 🤖 Đánh Giá Mô Hình AI", "3. 📈 Trực Quan Hóa (Biểu Đồ)"]
+# BỔ SUNG THÊM TAB SỐ 4 CHO FEEDBACK
+menu = ["1. 📦 Tiền Xử Lý & Thống Kê (EDA)", "2. 🤖 Đánh Giá Mô Hình AI", "3. 📈 Trực Quan Hóa (Biểu Đồ)", "4. 📝 Feedback (Bước 10)"]
 choice = st.sidebar.radio("Chọn bảng điều khiển:", menu)
 
 # ==========================================
@@ -180,3 +181,47 @@ elif choice == "3. 📈 Trực Quan Hóa (Biểu Đồ)":
         
     else:
         st.warning("⚠️ Hãy đảm bảo bạn đã chạy cả 2 file Thu thập và Train model!")
+
+# ==========================================
+# TAB 4: BƯỚC 10 - FEEDBACK LOOP (BỔ SUNG)
+# ==========================================
+elif choice == "4. 📝 Feedback (Bước 10)":
+    st.header("📝 BƯỚC 10: FEEDBACK LOOP")
+    st.write("Thu thập phản hồi từ người dùng/nhà đầu tư để ghi nhận vào hệ thống nhằm cải tiến cấu trúc Dữ liệu và Model AI trong tương lai.")
+
+    # Giao diện nhập Feedback
+    st.markdown("### ✍️ Đóng góp ý kiến cho hệ thống AI")
+    col1, col2 = st.columns([1, 3])
+    with col1:
+        user_rating = st.slider("Chấm điểm AI (1-5 ⭐):", 1, 5, 5)
+    with col2:
+        user_comment = st.text_input("Đề xuất cải tiến (VD: Thêm dữ liệu NLP, chỉnh sửa MACD...):")
+
+    if st.button("💾 Gửi Feedback vào System"):
+        # Kết nối DB và lưu dữ liệu bằng DB_PATH
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            # Tạo bảng tự động nếu chưa có
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS model_feedback (
+                    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    Rating INTEGER,
+                    Comment TEXT
+                )
+            """)
+            # Insert dữ liệu mới
+            cursor.execute("INSERT INTO model_feedback (Rating, Comment) VALUES (?, ?)", (user_rating, user_comment))
+            conn.commit()
+        st.success("✅ Đã ghi nhận Feedback thành công vào cơ sở dữ liệu (bảng 'model_feedback')!")
+
+    st.markdown("---")
+    
+    # SHOW DATABASE FEEDBACK LÊN WEB
+    st.subheader("📊 Lịch sử Feedback hiện tại trong Database")
+    with sqlite3.connect(DB_PATH) as conn:
+        try:
+            # Query để lấy bảng feedback, sắp xếp mới nhất lên đầu
+            feedback_df = pd.read_sql("SELECT * FROM model_feedback ORDER BY Timestamp DESC", con=conn)
+            st.dataframe(feedback_df, use_container_width=True)
+        except Exception:
+            st.info("💡 Chưa có feedback nào được ghi nhận trong hệ thống. Hãy là người đầu tiên gửi đánh giá!")
